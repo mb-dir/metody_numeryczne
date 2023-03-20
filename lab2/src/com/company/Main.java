@@ -1,5 +1,4 @@
 package com.company;
-
 import java.util.Scanner;
 
 public class Main {
@@ -67,27 +66,39 @@ public class Main {
 
         System.out.println("Podaj a");
         double a = scanner.nextDouble();
+        double fa = wartoscFunkcji(wspolczynniki,a);
 
         System.out.println("Podaj b");
         double b = scanner.nextDouble();
 
-        System.out.println("Podaj dokladnosc");
-        double epsilon = scanner.nextDouble();
+        double fb = wartoscFunkcji(wspolczynniki,b);
 
-        double pivot = 0;
+        if(czySpelniaWarunek(fa,fb)){
+            System.out.println("Podaj dokladnosc");
+            double epsilon = scanner.nextDouble();
 
-        while(Math.abs(a-b)>epsilon){
-            pivot = (a+b)/2;
-            if(wartoscFunkcji(wspolczynniki,pivot)==0){
-                System.out.println(pivot);
-                break;
-            }else if(wartoscFunkcji(wspolczynniki, pivot) * wartoscFunkcji(wspolczynniki, a) < 0) {
-                b = pivot;
-            } else {
-                a = pivot;
+            int iteracje = 0;
+
+            double pivot = 0;
+
+            while(Math.abs(a-b)>epsilon){
+                pivot = (a+b)/2;
+                if(wartoscFunkcji(wspolczynniki,pivot)==0){
+                    System.out.println(pivot);
+                    System.out.println("Iteracje: " + iteracje);
+                    break;
+                }else if(wartoscFunkcji(wspolczynniki, pivot) * wartoscFunkcji(wspolczynniki, a) < 0) {
+                    b = pivot;
+                } else {
+                    a = pivot;
+                }
+                iteracje++;
+                System.out.println("Iteracje: " + iteracje);
             }
+            System.out.println(pivot);
+        }else{
+            System.out.println("Zalozenia nie sa spelnione");
         }
-        System.out.println(pivot);
     }
 
     public static void falsy(){
@@ -145,6 +156,13 @@ public class Main {
             wspolczynniki[i] = scanner.nextDouble();
         }
 
+        double odwroconeWspolczynniki[] = new double[wspolczynniki.length];
+
+        for(int i = wspolczynniki.length-1; i >=0; i--) {
+            int index = wspolczynniki.length-1-i;
+            odwroconeWspolczynniki[index] = wspolczynniki[i];
+        }
+
         System.out.println("Podaj a");
         double a = scanner.nextDouble();
 
@@ -159,22 +177,32 @@ public class Main {
 
         double fx0 = wartoscFunkcji(wspolczynniki,x0);
         double fx1 = wartoscFunkcji(wspolczynniki,x1);
-        double x2 = 0;
 
+        double fx0DP = obliczWartosc2giejPochodnej(wspolczynniki, x0);
+        double fx1DP = obliczWartosc2giejPochodnej(wspolczynniki, x1);
+
+        double x2 = 0;
+        if(fx0*fx0DP>0){
+            x2 = x0;
+        }else if(fx1*fx1DP>0){
+            x2 = x1;
+        }else{
+            System.out.println("Zalozenia nie sa spelnione");
+            return;
+        }
+        System.out.println("Punkt poczatkowy: " + x2);
 
         int iteracje = 0;
         while (iteracje < maxIteracje){
-            double dfdx = (fx1 - fx0) / (x1 - x0);
+            double dfdx = obliczWartoscPochodnej(wspolczynniki,x2);
             x2 = x1 - fx1 / dfdx;
             double fx2 = wartoscFunkcji(wspolczynniki, x2);
 
             if (Math.abs(fx2) < epsilon) {
                 System.out.println(x2);
+                System.out.println("iteracje: " + iteracje);
                 return;
             }
-
-            x0 = x1;
-            fx0 = fx1;
             x1 = x2;
             fx1 = fx2;
             iteracje++;
@@ -198,7 +226,7 @@ public class Main {
     }
 
 
-    //Przekazuj wspolczynniki w odwrotnej kolejności - tzn 3x^2 + x + 2 ==> {2,1,3}
+    //Przekazuj wspolczynniki w odwrotnej kolejności - tzn 3x^2 + x + 2 ==> {2,1,3,7 }
     public static double obliczWartosc2giejPochodnej(double[] wspolczynniki, double x) {
         double result = 0.0;
         int n = wspolczynniki.length - 1; // stopień wielomianu
@@ -207,5 +235,10 @@ public class Main {
         }
 
         return result;
+    }
+
+    public static boolean czySpelniaWarunek(double fa, double fb){
+        if(fa*fb < 0) return true;
+        return false;
     }
 }
