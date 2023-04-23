@@ -1,13 +1,17 @@
 package com.company;
 import java.util.Scanner;
-
+import org.apache.commons.math3.analysis.UnivariateFunction;
+import org.apache.commons.math3.analysis.function.Sin;
 public class Main {
-
     public static void main(String[] args) {
 //        sieczne();
 //        bisekcja();
 //        falsy();
-        styczne();
+//        styczne();
+        UnivariateFunction function = new Sin();
+        FunctionEvaluator evaluator = new FunctionEvaluator(function);
+        double result = evaluator.evaluateAt(2.0);
+        System.out.println("f(2) = " + result);
     }
 
     public static void sieczne(){
@@ -73,7 +77,7 @@ public class Main {
 
         double fb = wartoscFunkcji(wspolczynniki,b);
 
-        if(czySpelniaWarunek(fa,fb)){
+        if(czySpelniaWarunekBisekcja(fa,fb)){
             System.out.println("Podaj dokladnosc");
             double epsilon = scanner.nextDouble();
 
@@ -237,7 +241,7 @@ public class Main {
         return result;
     }
 
-    public static boolean czySpelniaWarunek(double fa, double fb){
+    public static boolean czySpelniaWarunekBisekcja(double fa, double fb){
         if(fa*fb < 0) return true;
         return false;
     }
