@@ -1,17 +1,11 @@
 package com.company;
 import java.util.Scanner;
-import org.apache.commons.math3.analysis.UnivariateFunction;
-import org.apache.commons.math3.analysis.function.Sin;
 public class Main {
     public static void main(String[] args) {
 //        sieczne();
 //        bisekcja();
 //        falsy();
 //        styczne();
-        UnivariateFunction function = new Sin();
-        FunctionEvaluator evaluator = new FunctionEvaluator(function);
-        double result = evaluator.evaluateAt(2.0);
-        System.out.println("f(2) = " + result);
     }
 
     public static void sieczne(){
