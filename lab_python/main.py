@@ -1,5 +1,9 @@
 from numdifftools import Derivative
-
+# NAPRAWA TABELI PRZESTAWNEJ
+# -zliczamy wiersze i kolumny(ILE.NIEPUSTYCH)
+# =PRZESUNIĘCIE($A$8(początek wierszy);ZAOKR.DO.CAŁK((WIERSZ()-WIERSZ($A$19(pierwszy wiersz do wypełniania)))/$H$9(ilość kolumn));0)
+# =PRZESUNIĘCIE($B$7(początek kolumn);0;MOD((WIERSZ()-WIERSZ($B$19(pierwszy wiersz do wypełniania)));$H$9(ilość kolumn)))
+# =WYSZUKAJ.PIONOWO(A19(pierwszy wiersz do wypełniania);$A$7:$E$13(zakres całej tabeli); PODAJ.POZYCJĘ(B19(pierwszy wiersz do wypełniania);$B$7:$E$7(zakres nagłówków kolumn);0)+1;0)
 
 def f(x):
     return x * x
@@ -72,8 +76,13 @@ def metoda_simpsona_zlozona():
         i += 1
     suma *= h / 3
 
+    df4 = Derivative(f, n=4)
+    R=(-((b-a)*h**4)/180)*df4((a+b))
+    # sympy, bo ta biblioteka to zamiast 0 daje przybliżenie zera
+
     print("metoda simpsona złożona")
     print(suma)
+    print(R)
 
 
 # metoda_simpsona_prosta()
