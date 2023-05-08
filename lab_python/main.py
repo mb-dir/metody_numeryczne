@@ -32,22 +32,22 @@ def metoda_simpsona_prosta():
 
 
 def metoda_trapezow_zlozona():
-    n = 10  # - ilość podprzedziałów
-    h = (abs(a) + abs(b)) / n  # - szerokość podprzedziału
+    n = 5  # - ilość podprzedziałów
+    h = (b-a) / n  # - szerokość podprzedziału
     suma = 0
-    lewy = a
-    prawy = a + h
+    x = a+h
 
     i = 0
     while i < n:
-        flewy = f(lewy)
-        fprawy = f(prawy)
-        suma += ((prawy - lewy) / 2) * (flewy + fprawy)
-        lewy = prawy
-        prawy = lewy + h
+        suma += f(x)
+        x+=h
         i += 1
+    suma = h * (0.5 * f(a) + suma + 0.5 * f(b))
+    df2 = Derivative(f, n=2)
+    R=(-((b-a)*h**2)/12)*df2((a+b)/2)
     print("Metoda trapezów złożona")
     print(suma)
+    print(R)
 
 def metoda_simpsona_zlozona():
     n = 10  # - ilość podprzedziałów
@@ -67,7 +67,8 @@ def metoda_simpsona_zlozona():
     print("metoda simpsona złożona")
     print(S)
 
-metoda_simpsona_prosta()
-metoda_trapezow_prosta()
+# metoda_simpsona_prosta()
+# metoda_trapezow_prosta()
 metoda_trapezow_zlozona()
-metoda_simpsona_zlozona()
+# metoda_simpsona_zlozona()
+# interpolacja i aproksymacja(sredniokwadratowa)
