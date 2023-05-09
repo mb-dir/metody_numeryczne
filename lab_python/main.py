@@ -4,7 +4,7 @@ from numdifftools import Derivative
 # =PRZESUNIĘCIE($A$8(początek wierszy);ZAOKR.DO.CAŁK((WIERSZ()-WIERSZ($A$19(pierwszy wiersz do wypełniania)))/$H$9(ilość kolumn));0)
 # =PRZESUNIĘCIE($B$7(początek kolumn);0;MOD((WIERSZ()-WIERSZ($B$19(pierwszy wiersz do wypełniania)));$H$9(ilość kolumn)))
 # =WYSZUKAJ.PIONOWO(A19(pierwszy wiersz do wypełniania);$A$7:$E$13(zakres całej tabeli); PODAJ.POZYCJĘ(B19(pierwszy wiersz do wypełniania);$B$7:$E$7(zakres nagłówków kolumn);0)+1;0)
-
+# SourceData:=Range("A4:L200").SpecialCells(xlCellTypeConstants)
 def f(x):
     return x * x
 
