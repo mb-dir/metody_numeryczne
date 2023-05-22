@@ -1,4 +1,6 @@
 from sympy import Symbol, diff
+from scipy.interpolate import lagrange
+import numpy as np
 
 
 def f(x):
@@ -108,8 +110,33 @@ def metoda_simpsona_zlozona():
     print("\n")
 
 
-metoda_trapezow_prosta()
-metoda_simpsona_prosta()
-metoda_trapezow_zlozona()
-metoda_simpsona_zlozona()
+# metoda_trapezow_prosta()
+# metoda_simpsona_prosta()
+# metoda_trapezow_zlozona()
+# metoda_simpsona_zlozona()
 # interpolacja i aproksymacja(sredniokwadratowa)
+
+
+def lagrange1(x_data, y_data, a):
+    n = len(x_data)
+    y_interp = 0
+
+    for i in range(n):
+        L = 1
+        for j in range(n):
+            # Obliczamy wartość "pojedyńczego" węzła
+            if i != j:
+                L *= (a - x_data[j]) / (x_data[i] - x_data[j])
+        # Dodajemy ją do tego co już jest
+        y_interp += y_data[i] * L
+    return y_interp
+
+
+x1 = [-1, 0, 1, 2]
+y1 = [3, 1, 2, -6]
+print(lagrange1(x1, y1, 1))
+
+x = np.array([-1, 0, 1, 2])
+y = np.array([3, 1, 2, -6])
+poly = lagrange(x, y)
+print(poly(1))
