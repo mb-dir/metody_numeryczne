@@ -117,26 +117,64 @@ def metoda_simpsona_zlozona():
 # interpolacja i aproksymacja(sredniokwadratowa)
 
 
-def lagrange1(x_data, y_data, a):
-    n = len(x_data)
-    y_interp = 0
+# def lagrange1(x_data, y_data, a):
+#     n = len(x_data)
+#     y_interp = 0
+#
+#     for i in range(n):
+#         L = 1
+#         for j in range(n):
+#             # Obliczamy wartość "pojedyńczego" węzła
+#             if i != j:
+#                 L *= (a - x_data[j]) / (x_data[i] - x_data[j])
+#         # Dodajemy ją do tego co już jest
+#         y_interp += y_data[i] * L
+#     return y_interp
+#
+#
+# x1 = [-1, 0, 1, 2]
+# y1 = [3, 1, 2, -6]
+# print(lagrange1(x1, y1, 1))
+#
+# x = np.array([-1, 0, 1, 2])
+# y = np.array([3, 1, 2, -6])
+# poly = lagrange(x, y)
+# print(poly(1))
 
-    for i in range(n):
-        L = 1
-        for j in range(n):
-            # Obliczamy wartość "pojedyńczego" węzła
-            if i != j:
-                L *= (a - x_data[j]) / (x_data[i] - x_data[j])
-        # Dodajemy ją do tego co już jest
-        y_interp += y_data[i] * L
-    return y_interp
+# Aproksymacja średniokwadratowa
 
+def least_squares_approximation(x, y):
+    n = len(x)
 
-x1 = [-1, 0, 1, 2]
-y1 = [3, 1, 2, -6]
-print(lagrange1(x1, y1, 1))
+    # Oblicz potrzebne sumy
+    sum_x_squared = np.sum(x**2)
+    sum_x_cubed = np.sum(x**3)
+    sum_x_fourth = np.sum(x**4)
+    sum_x_y = np.sum(x * y)
+    sum_x_squared_y = np.sum(x**2 * y)
+    sum_x = np.sum(x)
+    sum_y = np.sum(y)
 
+    # Rozwiązanie układu równań normalnych
+    A = np.array([[sum_x_fourth, sum_x_cubed, sum_x_squared],
+                  [sum_x_cubed, sum_x_squared, sum_x],
+                  [sum_x_squared, sum_x, n]])
+    B = np.array([sum_x_squared_y, sum_x_y, sum_y])
+
+    # Oblicz współczynniki a2, a1, a0
+    a2, a1, a0 = np.linalg.solve(A, B)
+
+    return a2, a1, a0
+
+# Dane wejściowe
 x = np.array([-1, 0, 1, 2])
-y = np.array([3, 1, 2, -6])
-poly = lagrange(x, y)
-print(poly(1))
+y = np.array([3, 1, 2, -5])
+
+# Wywołanie funkcji aproksymacji
+a2, a1, a0 = least_squares_approximation(x, y)
+
+# Wyświetlenie wyników
+print("Współczynniki:")
+print("a2 =", a2)
+print("a1 =", a1)
+print("a0 =", a0)
